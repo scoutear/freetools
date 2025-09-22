@@ -2,27 +2,23 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <title>Capograma</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Campograma</title>
 
-    <!-- Tailwind CSS vía CDN -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-      rel="stylesheet"
-    />
+    <!-- Tailwind desde CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- React y ReactDOM UMD (como en CodePen) -->
+    <!-- React y ReactDOM desde CDN -->
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
 
-    <!-- XLSX para exportar Stats -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   </head>
   <body class="bg-gray-100">
-    <!-- Contenedor donde React va a montar la app -->
-    <div id="root"></div>
+    <!-- Contenedor principal de la app -->
+    <div id="root" class="min-h-screen flex flex-col"></div>
 
-    <!-- Tu script compilado (el que genera Capograma) -->
-    <script src="dist/script.js"></script>
+    <!-- Tu script compilado -->
+    <script src="./script.js"></script>
   </body>
 </html>
 
