@@ -1,15 +1,22 @@
 // === Campograma React App ===
+
 const { useState } = React;
 
 function Campograma() {
   const [acciones, setAcciones] = useState([]);
-  const [equipoLocal] = useState([
+  const [equipoLocal, setEquipoLocal] = useState([
     { id: 1, nombre: "Jugador 1" },
     { id: 2, nombre: "Jugador 2" },
+    { id: 3, nombre: "Jugador 3" },
+    { id: 4, nombre: "Jugador 4" },
+    { id: 5, nombre: "Jugador 5" },
   ]);
-  const [equipoVisitante] = useState([
+  const [equipoVisitante, setEquipoVisitante] = useState([
     { id: 11, nombre: "Jugador 11" },
     { id: 12, nombre: "Jugador 12" },
+    { id: 13, nombre: "Jugador 13" },
+    { id: 14, nombre: "Jugador 14" },
+    { id: 15, nombre: "Jugador 15" },
   ]);
 
   const agregarAccion = (jugador, tipo) => {
@@ -19,27 +26,27 @@ function Campograma() {
 
   return React.createElement(
     "div",
-    { className: "p-6 space-y-6" },
+    { className: "p-4 text-center" },
 
-    // Título
-    React.createElement("h1", { className: "text-2xl font-bold text-center" }, "Campograma"),
+    // título
+    React.createElement("h1", { className: "text-2xl font-bold mb-6" }, "Campograma"),
 
-    // Layout principal
+    // equipos
     React.createElement(
       "div",
-      { className: "grid grid-cols-3 gap-4 items-start" },
+      { className: "flex justify-around mb-6" },
 
-      // Equipo Local
+      // equipo local
       React.createElement(
         "div",
         null,
-        React.createElement("h2", { className: "font-semibold mb-2 text-blue-700" }, "Equipo Local"),
+        React.createElement("h2", { className: "font-semibold text-blue-600 mb-2" }, "Equipo Local"),
         equipoLocal.map((j) =>
           React.createElement(
             "button",
             {
               key: j.id,
-              className: "block w-full bg-blue-200 hover:bg-blue-300 m-1 p-2 rounded",
+              className: "block w-40 bg-blue-200 hover:bg-blue-300 m-1 p-2 rounded shadow",
               onClick: () => agregarAccion(j.nombre, "Acción"),
             },
             j.nombre
@@ -47,29 +54,17 @@ function Campograma() {
         )
       ),
 
-      // Cancha
-      React.createElement(
-        "div",
-        { className: "bg-green-500 aspect-[2/3] mx-auto rounded relative" },
-        React.createElement("div", {
-          className: "absolute inset-0 border-4 border-white",
-        }),
-        React.createElement("div", {
-          className: "absolute top-1/2 left-1/2 w-24 h-24 border-2 border-white rounded-full -translate-x-1/2 -translate-y-1/2",
-        })
-      ),
-
-      // Equipo Visitante
+      // equipo visitante
       React.createElement(
         "div",
         null,
-        React.createElement("h2", { className: "font-semibold mb-2 text-red-700" }, "Equipo Visitante"),
+        React.createElement("h2", { className: "font-semibold text-red-600 mb-2" }, "Equipo Visitante"),
         equipoVisitante.map((j) =>
           React.createElement(
             "button",
             {
               key: j.id,
-              className: "block w-full bg-red-200 hover:bg-red-300 m-1 p-2 rounded",
+              className: "block w-40 bg-red-200 hover:bg-red-300 m-1 p-2 rounded shadow",
               onClick: () => agregarAccion(j.nombre, "Acción"),
             },
             j.nombre
@@ -78,19 +73,19 @@ function Campograma() {
       )
     ),
 
-    // Acciones registradas
+    // lista de acciones
     React.createElement(
       "div",
-      { className: "mt-6" },
-      React.createElement("h2", { className: "font-semibold text-lg mb-2" }, "Acciones"),
+      { className: "mt-6 text-left max-w-md mx-auto" },
+      React.createElement("h2", { className: "font-semibold mb-2" }, "Acciones"),
       React.createElement(
         "ul",
-        { className: "list-disc pl-6" },
+        { className: "list-disc list-inside bg-white p-3 rounded shadow" },
         acciones.map((a, idx) =>
           React.createElement(
             "li",
             { key: idx },
-            `${a.minuto}' ${a.jugador} - ${a.tipo}`
+            a.minuto + "' " + a.jugador + " - " + a.tipo
           )
         )
       )
@@ -101,9 +96,4 @@ function Campograma() {
 // === Montar la app ===
 ReactDOM.createRoot(document.getElementById("root")).render(
   React.createElement(Campograma, null)
-);
-
-// === Montar la app ===
-ReactDOM.createRoot(document.getElementById("root")).render(
-  React.createElement(Capograma, null)
 );
