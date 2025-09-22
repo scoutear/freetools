@@ -1,24 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <title>Campograma - Scoutear</title>
+<head>
+  <meta charset="utf-8" />
+  <title>Campograma - Scoutear</title>
 
-    <!-- Redirección si no hay login -->
-    <script>
-      if (localStorage.getItem("logged") !== "yes") {
-        window.location.href = "login.html";
-      }
-    </script>
+  <!-- Verificación login -->
+  <script>
+    if (localStorage.getItem("logged") !== "yes") {
+      window.location.href = "login.html";
+    }
+  </script>
 
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="bg-gray-100 min-h-screen">
-    <!-- Contenedor React -->
-    <div id="root"></div>
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Script compilado que monta Campograma -->
-    <script src="coordscout/dist/script.js"></script>
-  </body>
+  <!-- React y ReactDOM (deben ir antes que tu script compilado) -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <!-- Botón INICIO arriba -->
+  <div class="p-2 bg-gray-200 shadow">
+    <a href="index.html" class="bg-gray-700 text-white px-4 py-2 rounded inline-block">⬅ INICIO</a>
+  </div>
+
+  <!-- Contenedor de React -->
+  <div id="root" class="p-4"></div>
+
+  <!-- Tu script compilado -->
+  <script src="coordscout/dist/script.js" defer></script>
+</body>
 </html>
