@@ -13,113 +13,22 @@
 
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- XLSX -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
-    <!-- React y ReactDOM (antes que Babel) -->
-    <script
-      src="https://unpkg.com/react@18/umd/react.development.js"
-      crossorigin
-    ></script>
-    <script
-      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
-      crossorigin
-    ></script>
-
-    <!-- Babel -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   </head>
   <body class="bg-gray-100 min-h-screen">
+    <!-- Botón de inicio -->
+    <div class="p-2 bg-gray-200 shadow">
+      <button
+        onclick="window.location.href='index.html'"
+        class="bg-gray-700 text-white px-4 py-2 rounded"
+      >
+        INICIO
+      </button>
+    </div>
+
+    <!-- Contenedor React -->
     <div id="root"></div>
 
-    <!-- Tu app React -->
-    <script type="text/babel">
-      const { useState } = React;
-
-      // === Componente principal de Campograma ===
-      function Capograma() {
-        const [acciones, setAcciones] = useState([]);
-        const [equipoLocal, setEquipoLocal] = useState([
-          { id: 1, nombre: "Jugador 1" },
-          { id: 2, nombre: "Jugador 2" },
-        ]);
-        const [equipoVisitante, setEquipoVisitante] = useState([
-          { id: 11, nombre: "Jugador 11" },
-          { id: 12, nombre: "Jugador 12" },
-        ]);
-
-        const agregarAccion = (jugador, tipo) => {
-          const nueva = { jugador, tipo, minuto: acciones.length + 1 };
-          setAcciones([...acciones, nueva]);
-        };
-
-        return (
-          <div className="p-4">
-            <h1 className="text-xl font-bold mb-4">Campograma</h1>
-            <div className="flex justify-around mb-4">
-              <div>
-                <h2 className="font-semibold">Equipo Local</h2>
-                {equipoLocal.map((j) => (
-                  <button
-                    key={j.id}
-                    className="block bg-blue-200 m-1 p-2 rounded"
-                    onClick={() => agregarAccion(j.nombre, "Acción")}
-                  >
-                    {j.nombre}
-                  </button>
-                ))}
-              </div>
-              <div>
-                <h2 className="font-semibold">Equipo Visitante</h2>
-                {equipoVisitante.map((j) => (
-                  <button
-                    key={j.id}
-                    className="block bg-red-200 m-1 p-2 rounded"
-                    onClick={() => agregarAccion(j.nombre, "Acción")}
-                  >
-                    {j.nombre}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="mt-4">
-              <h2 className="font-semibold">Acciones</h2>
-              <ul>
-                {acciones.map((a, idx) => (
-                  <li key={idx}>
-                    {a.minuto}' {a.jugador} - {a.tipo}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        );
-      }
-
-      // === App con botón INICIO ===
-      function App() {
-        return (
-          <div className="min-h-screen flex flex-col">
-            {/* Botón inicio */}
-            <div className="p-2 bg-gray-200 shadow">
-              <button
-                onClick={() => (window.location.href = "index.html")}
-                className="bg-gray-700 text-white px-4 py-2 rounded"
-              >
-                INICIO
-              </button>
-            </div>
-
-            <div className="flex-1">
-              <Capograma />
-            </div>
-          </div>
-        );
-      }
-
-      // === Montar la app ===
-      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
-    </script>
+    <!-- Script compilado que ya funcionaba -->
+    <script src="coordscout/dist/script.js"></script>
   </body>
 </html>
