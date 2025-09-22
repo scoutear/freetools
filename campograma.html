@@ -15,28 +15,20 @@
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body class="bg-gray-100 min-h-screen">
-    <!-- Contenedor React -->
+    <!-- Contenedor para el botón inicio -->
+    <div id="header" class="p-2 bg-gray-200 shadow">
+      <button
+        onclick="window.location.href='index.html'"
+        class="bg-gray-700 text-white px-4 py-2 rounded"
+      >
+        INICIO
+      </button>
+    </div>
+
+    <!-- Contenedor React (lo usa script.js) -->
     <div id="root"></div>
 
     <!-- Script compilado que monta Capograma -->
     <script src="coordscout/dist/script.js"></script>
-
-    <!-- Script para inyectar el botón inicio -->
-    <script>
-      window.addEventListener("DOMContentLoaded", () => {
-        const root = document.getElementById("root");
-        const header = document.createElement("div");
-        header.className = "p-2 bg-gray-200 shadow";
-        header.innerHTML = `
-          <button onclick="window.location.href='index.html'"
-            class="bg-gray-700 text-white px-4 py-2 rounded">
-            INICIO
-          </button>
-        `;
-        // Insertar arriba del root
-        root.parentNode.insertBefore(header, root);
-      });
-    </script>
   </body>
 </html>
-
