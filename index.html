@@ -7,8 +7,9 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
-  <!-- Header -->
-  <header class="bg-white shadow-md">
+
+  <!-- Header Sticky -->
+  <header class="bg-white shadow fixed w-full top-0 left-0 z-50">
     <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
       <h1 class="text-2xl font-bold text-blue-600">SportStats</h1>
       <nav class="space-x-6">
@@ -19,21 +20,46 @@
   </header>
 
   <!-- Hero -->
-  <section class="bg-blue-50 py-16 text-center">
+  <section class="bg-blue-50 py-24 text-center mt-16">
     <h2 class="text-4xl font-bold mb-4">Visualizaciones Interactivas</h2>
     <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-      Explorá nuestras herramientas deportivas interactivas integradas desde CodePen.
+      Herramientas deportivas desarrolladas por <strong>SportStats</strong>.
     </p>
   </section>
 
   <!-- Campograma -->
-  <section id="campograma" class="max-w-6xl mx-auto px-6 py-12">
-    <h3 class="text-2xl font-semibold mb-4">Campograma Eventing</h3>
-    <div class="rounded-xl overflow-hidden shadow-lg">
+  <section id="campograma" class="max-w-6xl mx-auto px-6 py-16">
+    <h3 class="text-3xl font-semibold mb-6 text-center">⚽ Campograma Eventing</h3>
+    <div class="overflow-hidden rounded-xl shadow-lg">
       <iframe 
-        height="600" 
-        style="width: 100%;" 
-        scrolling="no" 
+        src="https://codepen.io/sportstats/full/WbrNyeB" 
+        style="width: 100%; height: 700px; border: none;" 
+        title="Campograma Eventing"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </section>
+
+  <!-- xG Model -->
+  <section id="xgmodel" class="max-w-6xl mx-auto px-6 py-16 bg-white">
+    <h3 class="text-3xl font-semibold mb-6 text-center">📊 xG Model</h3>
+    <div class="overflow-hidden rounded-xl shadow-lg">
+      <iframe 
+        src="https://codepen.io/sportstats/full/azdzaNr" 
+        style="width: 100%; height: 700px; border: none;" 
+        title="xG Model"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 py-6 text-center text-gray-500">
+    <p>&copy; 2025 SportStats. Todos los derechos reservados.</p>
+  </footer>
+
+</body>
+</html>
         title="Campograma Eventing" 
         src="https://codepen.io/sportstats/embed/WbrNyeB?default-tab=result" 
         frameborder="no" 
