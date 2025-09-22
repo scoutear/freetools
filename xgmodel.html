@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>xG Model - Scoutear</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="bg-gray-100">
-    <!-- contenedor React -->
-    <div id="root"></div>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>xG Model</title>
+</head>
+<body>
+  <div id="root"></div>
 
-    <!-- script compilado -->
-    <script src="coordscout/dist/script.js"></script>
-  </body>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+  <!-- IMPORTANTE: defer -->
+  <script src="xg-model/dist/script.js" defer></script>
+</body>
 </html>
