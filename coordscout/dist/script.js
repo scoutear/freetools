@@ -1,9 +1,9 @@
 // Pegar en el panel JS de CodePen (preprocessor = Babel)
 // Usa React global (viene del HTML UMD)
 const { useEffect, useRef, useState } = React;
-const STORAGE_KEY = "capograma_events_v_arrow_v1";
+const STORAGE_KEY = "campograma_events_v_arrow_v1";
 
-function Capograma() {
+function Campograma() {
   const pitchRef = useRef(null);
 
   // estados principales (mantenemos la estructura que venías usando)
@@ -189,7 +189,7 @@ function Capograma() {
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(rows);
     XLSX.utils.book_append_sheet(wb, ws, "Stats");
-    XLSX.writeFile(wb, "stats_capograma.xlsx");
+    XLSX.writeFile(wb, "stats_campograma.xlsx");
   }
 
   function handlePointerDown(e) {
@@ -308,7 +308,7 @@ function App() {
         "INICIO"
       )
     ),
-    React.createElement("div", { className: "flex-1" }, React.createElement(Capograma, null))
+    React.createElement("div", { className: "flex-1" }, React.createElement(Campograma, null))
   );
 }
 
