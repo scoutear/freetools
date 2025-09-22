@@ -1,57 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <title>Campograma - Scoutear</title>
-
-  <!-- CHEQUEO LOGIN (si lo usás) -->
-  <script>
-    if (localStorage.getItem("logged") !== "yes") {
-      window.location.href = "login.html";
-    }
-  </script>
-
-  <!-- Tailwind (opcional) -->
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- React y ReactDOM: DEBEN cargarse ANTES que el JS de la app -->
-  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <!-- React y ReactDOM -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <!-- XLSX para exportar -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 </head>
-<body class="bg-gray-100 min-h-screen">
-  <!-- Botón INICIO (fijo, fuera de React) -->
-  <div style="position:fixed; top:12px; left:12px; z-index:9999;">
-    <a href="index.html" class="bg-blue-600 text-white px-4 py-2 rounded">INICIO</a>
-  </div>
-
-  <!-- Aquí monta React -->
+<body class="bg-gray-100">
+  <a href="index.html" class="m-4 inline-block px-4 py-2 bg-gray-700 text-white rounded">INICIO</a>
   <div id="root"></div>
 
-  <!-- === CARGA tu JS compilado (RUTA ABSOLUTA recomendado) === -->
-  <script src="https://scoutear.github.io/freetools/coordscout/dist/campograma.js"></script>
-
-  <!-- Diagnóstico visible (no rompe nada) -->
-  <script>
-    console.log("DEBUG: #root exists?", !!document.getElementById('root'));
-    console.log("DEBUG: React defined?", typeof React !== 'undefined');
-    console.log("DEBUG: ReactDOM defined?", typeof ReactDOM !== 'undefined');
-    window.addEventListener('load', () => {
-      console.log('window.load -> #root children:', document.getElementById('root')?.childElementCount);
-    });
-    setTimeout(() => {
-      const root = document.getElementById('root');
-      if (root && root.childElementCount === 0) {
-        const el = document.createElement('div');
-        el.style.background = '#fee';
-        el.style.color = '#900';
-        el.style.padding = '10px';
-        el.style.margin = '12px';
-        el.innerText = 'ERROR: #root vacío. Mirá la consola (F12) y pegá aquí los errores.';
-        document.body.insertBefore(el, root.nextSibling);
-      }
-    }, 1800);
-  </script>
+  <!-- tu script principal -->
+  <script src="coordscout/dist/campograma.js"></script>
 </body>
 </html>
