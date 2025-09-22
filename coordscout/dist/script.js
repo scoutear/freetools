@@ -6,7 +6,7 @@ const STORAGE_KEY = "campograma_events_v_arrow_v1";
 function Campograma() {
   const pitchRef = useRef(null);
 
-  // estados principales (mantenemos la estructura que venías usando)
+  // estados principales
   const [events, setEvents] = useState([]);
   const [selectedPlayerIdx, setSelectedPlayerIdx] = useState(null);
   const [selectedActionIdx, setSelectedActionIdx] = useState(null);
@@ -139,7 +139,7 @@ function Campograma() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "eventos_capograma.csv";
+    a.download = "eventos_campograma.csv";
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -285,7 +285,7 @@ function Campograma() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-6xl flex gap-4">
-        {/* ... toda la UI original que vos tenías ... */}
+        {/* TODO: acá va el resto de la UI que estabas armando */}
       </div>
     </div>
   );
