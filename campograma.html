@@ -17,16 +17,16 @@
     </button>
   </div>
 
-  <!-- Script de protección -->
+  <!-- ⚡ Protección: debe ir ANTES de cargar script.js -->
   <script>
+    // Si el usuario no está logueado, mandarlo al login
     if (localStorage.getItem("logged") !== "yes") {
       window.location.href = "login.html";
     }
   </script>
 
-  <!-- Script compilado de la app Campograma -->
+  <!-- App compilada de Campograma -->
   <script src="coordscout/dist/script.js"></script>
 </body>
 </html>
-
 
