@@ -1,17 +1,15 @@
-// === Campograma React App ===
-
 const { useState } = React;
 
 function Campograma() {
   const [acciones, setAcciones] = useState([]);
-  const [equipoLocal, setEquipoLocal] = useState([
+  const [equipoLocal] = useState([
     { id: 1, nombre: "Jugador 1" },
     { id: 2, nombre: "Jugador 2" },
     { id: 3, nombre: "Jugador 3" },
     { id: 4, nombre: "Jugador 4" },
     { id: 5, nombre: "Jugador 5" },
   ]);
-  const [equipoVisitante, setEquipoVisitante] = useState([
+  const [equipoVisitante] = useState([
     { id: 11, nombre: "Jugador 11" },
     { id: 12, nombre: "Jugador 12" },
     { id: 13, nombre: "Jugador 13" },
@@ -24,76 +22,85 @@ function Campograma() {
     setAcciones([...acciones, nueva]);
   };
 
+  const exportarExcel = () => {
+    if (acciones.length === 0) {
+      alert("No hay acciones para exportar.");
+      return;
+    }
+    const worksheet = XLSX.utils.json_to_sheet(acciones);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Acciones");
+    XLSX.writeFile(workbook, "acciones.xlsx");
+  };
+
   return React.createElement(
     "div",
-    { className: "p-4 text-center" },
+    { className: "p-4" },
 
     // título
-    React.createElement("h1", { className: "text-2xl font-bold mb-6" }, "Campograma"),
+    React.createElement("h1", { className: "text-2xl font-bold mb-6 text-center" }, "Campograma"),
 
-    // equipos
+    // cancha
     React.createElement(
       "div",
-      { className: "flex justify-around mb-6" },
+      { className: "relative mx-auto mb-6", style: { width: "600px", height: "400px", backgroundColor: "green" } },
+      React.createElement("div", { className: "absolute inset-0 border-4 border-white" }),
+      React.createElement("div", { className: "absolute top-1/2 left-1/2 w-32 h-32 border-4 border-white rounded-full -translate-x-1/2 -translate-y-1/2" }),
 
-      // equipo local
-      React.createElement(
-        "div",
-        null,
-        React.createElement("h2", { className: "font-semibold text-blue-600 mb-2" }, "Equipo Local"),
-        equipoLocal.map((j) =>
-          React.createElement(
-            "button",
-            {
-              key: j.id,
-              className: "block w-40 bg-blue-200 hover:bg-blue-300 m-1 p-2 rounded shadow",
-              onClick: () => agregarAccion(j.nombre, "Acción"),
-            },
-            j.nombre
-          )
+      // jugadores locales
+      equipoLocal.map((j, idx) =>
+        React.createElement(
+          "button",
+          {
+            key: j.id,
+            className: "absolute w-10 h-10 bg-blue-500 text-white text-xs rounded-full flex items-center justify-center hover:bg-blue-600",
+            style: { top: `${20 + idx * 60}px`, left: "40px" },
+            onClick: () => agregarAccion(j.nombre, "Acción"),
+          },
+          j.id
         )
       ),
 
-      // equipo visitante
-      React.createElement(
-        "div",
-        null,
-        React.createElement("h2", { className: "font-semibold text-red-600 mb-2" }, "Equipo Visitante"),
-        equipoVisitante.map((j) =>
-          React.createElement(
-            "button",
-            {
-              key: j.id,
-              className: "block w-40 bg-red-200 hover:bg-red-300 m-1 p-2 rounded shadow",
-              onClick: () => agregarAccion(j.nombre, "Acción"),
-            },
-            j.nombre
-          )
+      // jugadores visitantes
+      equipoVisitante.map((j, idx) =>
+        React.createElement(
+          "button",
+          {
+            key: j.id,
+            className: "absolute w-10 h-10 bg-red-500 text-white text-xs rounded-full flex items-center justify-center hover:bg-red-600",
+            style: { top: `${20 + idx * 60}px`, right: "40px" },
+            onClick: () => agregarAccion(j.nombre, "Acción"),
+          },
+          j.id
         )
       )
     ),
 
-    // lista de acciones
+    // acciones
     React.createElement(
       "div",
-      { className: "mt-6 text-left max-w-md mx-auto" },
-      React.createElement("h2", { className: "font-semibold mb-2" }, "Acciones"),
+      { className: "mt-6 max-w-xl mx-auto" },
+      React.createElement("h2", { className: "text-xl font-semibold mb-2" }, "Acciones"),
       React.createElement(
         "ul",
-        { className: "list-disc list-inside bg-white p-3 rounded shadow" },
+        { className: "list-disc list-inside bg-white p-4 rounded shadow" },
         acciones.map((a, idx) =>
-          React.createElement(
-            "li",
-            { key: idx },
-            a.minuto + "' " + a.jugador + " - " + a.tipo
-          )
+          React.createElement("li", { key: idx }, `${a.minuto}' ${a.jugador} - ${a.tipo}`)
         )
+      ),
+      React.createElement(
+        "button",
+        {
+          className: "mt-4 px-4 py-2 bg-yellow-400 hover:bg-yellow-500 rounded shadow font-semibold",
+          onClick: exportarExcel,
+        },
+        "STATS (Exportar a Excel)"
       )
     )
   );
 }
 
-// === Montar la app ===
+// montar app
 ReactDOM.createRoot(document.getElementById("root")).render(
   React.createElement(Campograma, null)
 );
