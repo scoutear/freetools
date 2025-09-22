@@ -1,34 +1,63 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>Campograma - Scoutear</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
-  <!-- Contenedor React -->
-  <div id="root"></div>
+  <head>
+    <meta charset="utf-8" />
+    <title>Campograma - Scoutear</title>
+    <script>
+      if (localStorage.getItem("logged") !== "yes") {
+        window.location.href = "login.html";
+      }
+    </script>
 
-  <!-- Botón de inicio -->
-  <div class="p-4">
-    <button onclick="window.location.href='index.html'"
-            class="bg-gray-700 text-white px-4 py-2 rounded">
-      INICIO
-    </button>
-  </div>
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Protección de login -->
-  <script>
-    if (localStorage.getItem("logged") !== "yes") {
-      window.location.href = "login.html";
-    }
-  </script>
+    <!-- XLSX -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-  <!-- React y ReactDOM (DEBEN IR ANTES DEL script.js) -->
-  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- React + ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 
-  <!-- Script de la app (tu Campograma) -->
-  <script src="coordscout/dist/script.js"></script>
-</body>
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+
+  <body class="bg-gray-100 min-h-screen">
+    <div id="root"></div>
+
+    <!-- Tu app Campograma -->
+    <script type="text/babel">
+      const { useEffect, useRef, useState } = React;
+
+      function CapogramaApp() {
+        return (
+          <div className="min-h-screen flex flex-col">
+            {/* Botón INICIO arriba */}
+            <div className="p-2 bg-gray-200 shadow">
+              <button
+                onClick={() => (window.location.href = "index.html")}
+                className="bg-gray-700 text-white px-4 py-2 rounded"
+              >
+                INICIO
+              </button>
+            </div>
+
+            {/* Todo tu componente original */}
+            <div className="flex-1">
+              <Capograma />
+            </div>
+          </div>
+        );
+      }
+
+      // 👇 pegamos aquí tu código de Capograma sin tocar nada
+      // (el largo que me pasaste antes, lo dejamos igual)
+      // -------------------------
+      // function Capograma() { ... }
+      // -------------------------
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<CapogramaApp />);
+    </script>
+  </body>
 </html>
