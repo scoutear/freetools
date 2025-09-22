@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login - Scoutear</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="h-screen flex items-center justify-center bg-gray-100">
+    <div class="bg-white p-6 rounded shadow w-80">
+      <h1 class="text-xl font-bold text-center mb-4">Acceso</h1>
+      <div class="space-y-3">
+        <input id="user" type="text" placeholder="Usuario" class="w-full border p-2 rounded" />
+        <input id="pass" type="password" placeholder="Contraseña" class="w-full border p-2 rounded" />
+        <button onclick="login()" class="w-full bg-blue-600 text-white py-2 rounded">Entrar</button>
+      </div>
+      <p id="error" class="text-red-600 text-sm mt-2 hidden">Usuario o contraseña incorrectos</p>
+    </div>
+
+    <script>
+      function login() {
+        const u = document.getElementById("user").value.trim();
+        const p = document.getElementById("pass").value.trim();
+
+        // 🔐 Usuario y contraseña configurables
+        const USER = "scout";
+        const PASS = "1234";
+
+        if (u === USER && p === PASS) {
+          localStorage.setItem("logged", "yes"); // guardo sesión
+          window.location.href = "index.html";   // voy al menú principal
+        } else {
+          document.getElementById("error").classList.remove("hidden");
+        }
+      }
+    </script>
+  </body>
+</html>
