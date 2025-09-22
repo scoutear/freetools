@@ -3,17 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <title>Campograma - Scoutear</title>
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="bg-gray-100">
+  <body class="bg-gray-100 min-h-screen flex flex-col">
     <!-- contenedor React -->
-    <div id="root"></div>
+    <div id="root" class="flex-1"></div>
 
-    <!-- React y ReactDOM -->
+    <!-- React -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 
-    <!-- 👇 Importa el build correcto -->
+    <!-- App -->
     <script src="coordscout/dist/campograma.js"></script>
   </body>
 </html>
