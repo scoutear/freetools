@@ -3,6 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <title>Campograma - Scoutear</title>
+    <script>
+  if (localStorage.getItem("logged") !== "yes") {
+    window.location.href = "login.html";
+  }
+</script>
 
     <!-- Tailwind (para las clases que usaste en CodePen) -->
     <script src="https://cdn.tailwindcss.com"></script>
