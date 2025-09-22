@@ -1,39 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <title>Campograma - Scoutear</title>
 
-    <!-- 🔐 chequeo login -->
-    <script>
-      if (localStorage.getItem("logged") !== "yes") {
-        window.location.href = "login.html";
-      }
-    </script>
+    <!-- React y ReactDOM (CDN) -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
 
-    <!-- Tailwind (SOLO para desarrollo, podés dejarlo por ahora) -->
+    <!-- TailwindCSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- XLSX para exportar STATS -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
-    <!-- React + ReactDOM UMD -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
   </head>
-
-  <body class="bg-gray-100 min-h-screen">
-    <!-- contenedor React -->
-    <div id="root"></div>
-
-    <!-- Botón Inicio (para volver al menú principal) -->
-    <div class="fixed top-4 left-4">
-      <a href="index.html" class="bg-blue-600 text-white px-4 py-2 rounded shadow">
+  <body class="bg-gray-100">
+    <!-- Botón Inicio -->
+    <div class="p-4">
+      <a href="index.html" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         INICIO
       </a>
     </div>
 
-    <!-- 🚨 ruta absoluta para que siempre cargue -->
-    <script src="/freetools/coordscout/dist/script.js"></script>
+    <!-- Contenedor React -->
+    <div id="root"></div>
+
+    <!-- Script principal de Campograma -->
+    <script src="./coordscout/dist/script.js"></script>
   </body>
 </html>
+
