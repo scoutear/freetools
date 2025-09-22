@@ -17,16 +17,18 @@
     </button>
   </div>
 
-  <!-- ⚡ Protección: debe ir ANTES de cargar script.js -->
+  <!-- Protección de login -->
   <script>
-    // Si el usuario no está logueado, mandarlo al login
     if (localStorage.getItem("logged") !== "yes") {
       window.location.href = "login.html";
     }
   </script>
 
-  <!-- App compilada de Campograma -->
+  <!-- React y ReactDOM -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+  <!-- Script de la app -->
   <script src="coordscout/dist/script.js"></script>
 </body>
 </html>
-
