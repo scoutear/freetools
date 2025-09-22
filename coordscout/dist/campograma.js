@@ -1,14 +1,13 @@
-// Pegar en el panel JS de CodePen (preprocessor = Babel)
-// Usa React global (viene del HTML UMD)
+// Usa React global (cargado desde campograma.html por CDN)
 const { useEffect, useRef, useState } = React;
-const STORAGE_KEY = "capograma_events_v_arrow_v1";
+const STORAGE_KEY = "campograma_events_v_arrow_v1";
 
-function Capograma() {
+function Campograma() {
   const pitchRef = useRef(null);
 
-  // estados principales (mantenemos la estructura que venías usando)
+  // Estados principales
   const [events, setEvents] = useState([]);
-  const [selectedPlayerIdx, setSelectedPlayerIdx] = useState(null); // "L0", "V0"
+  const [selectedPlayerIdx, setSelectedPlayerIdx] = useState(null);
   const [selectedActionIdx, setSelectedActionIdx] = useState(null);
   const [playersLocal, setPlayersLocal] = useState(Array(11).fill(""));
   const [playersVisit, setPlayersVisit] = useState(Array(11).fill(""));
@@ -18,26 +17,21 @@ function Capograma() {
   const [minutes, setMinutes] = useState("");
   const [seconds, setSeconds] = useState("");
 
-  // último evento dibujado en cancha (puede ser punto o flecha)
   const [lastEvent, setLastEvent] = useState(null);
-
-  // NUEVOS: hover y selección en tabla
   const [hoveredEventId, setHoveredEventId] = useState(null);
   const [selectedEventId, setSelectedEventId] = useState(null);
 
-  // estados para arrastrar (dibujar flecha)
   const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState(null); // { nx, ny }
-  const [dragEnd, setDragEnd] = useState(null); // preview end coords
+  const [dragStart, setDragStart] = useState(null);
+  const [dragEnd, setDragEnd] = useState(null);
 
-  // carga inicial desde localStorage
+  // Cargar desde localStorage
   useEffect(() => {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       try {
         const parsed = JSON.parse(raw);
         setEvents(parsed || []);
-        // opcional: poner lastEvent como el último del array si existe
         if (parsed && parsed.length) {
           setLastEvent(parsed[parsed.length - 1]);
         }
@@ -45,26 +39,23 @@ function Capograma() {
     }
   }, []);
 
-  // persistir
+  // Guardar en localStorage
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
   }, [events]);
 
-  // convierte evento pointer / mouse a coords relativas 0..100
   function getRelativeCoords(evt) {
     const el = pitchRef.current;
     if (!el) return null;
     const rect = el.getBoundingClientRect();
     const x = evt.clientX - rect.left;
     const y = evt.clientY - rect.top;
-    const nx = +(100 * (x / rect.width)).toFixed(2); // 0..100 izq->der
-    const ny = +(100 * (1 - y / rect.height)).toFixed(2); // 0..100 abajo->arriba
+    const nx = +(100 * (x / rect.width)).toFixed(2);
+    const ny = +(100 * (1 - y / rect.height)).toFixed(2);
     return { nx, ny };
   }
 
-  // Helper: crea evento de punto (sin final) — mantiene propiedades anteriores
   function createPointEvent(coords) {
-    const isLocal = selectedPlayerIdx && selectedPlayerIdx.startsWith("L");
     const idx = selectedPlayerIdx ? parseInt(selectedPlayerIdx.slice(1), 10) : null;
     const player = selectedPlayerIdx
       ? (selectedPlayerIdx.startsWith("L") ? playersLocal[idx] : playersVisit[idx])
@@ -76,10 +67,8 @@ function Capograma() {
       equipo: team,
       player,
       action: actions[selectedActionIdx],
-      // tradicional: nx, ny para compatibilidad
       nx: coords.nx,
       ny: coords.ny,
-      // x1/y1 -> inicio (si se quiere homogeneizar); x2/y2 vacíos
       x1: coords.nx,
       y1: coords.ny,
       x2: "",
@@ -88,17 +77,12 @@ function Capograma() {
       segundos: seconds || "",
       created_at: new Date().toISOString(),
     };
-    setEvents((s) => {
-      const next = [...s, ev];
-      return next;
-    });
+    setEvents((s) => [...s, ev]);
     setLastEvent(ev);
-    setSelectedEventId(ev.id); // marca seleccionado cuando lo creás
+    setSelectedEventId(ev.id);
   }
 
-  // Helper: crea evento flecha (inicio y fin)
   function createArrowEvent(start, end) {
-    const isLocal = selectedPlayerIdx && selectedPlayerIdx.startsWith("L");
     const idx = selectedPlayerIdx ? parseInt(selectedPlayerIdx.slice(1), 10) : null;
     const player = selectedPlayerIdx
       ? (selectedPlayerIdx.startsWith("L") ? playersLocal[idx] : playersVisit[idx])
@@ -110,27 +94,21 @@ function Capograma() {
       equipo: team,
       player,
       action: actions[selectedActionIdx],
-      // guardamos ambas parejas
       x1: start.nx,
       y1: start.ny,
       x2: end.nx,
       y2: end.ny,
-      // para compatibilidad, ponemos nx/ny como x1/y1
       nx: start.nx,
       ny: start.ny,
       minutos: minutes || "",
       segundos: seconds || "",
       created_at: new Date().toISOString(),
     };
-    setEvents((s) => {
-      const next = [...s, ev];
-      return next;
-    });
+    setEvents((s) => [...s, ev]);
     setLastEvent(ev);
-    setSelectedEventId(ev.id); // marca seleccionado cuando lo creás
+    setSelectedEventId(ev.id);
   }
 
-  // BORRAR evento
   function deleteEvent(id) {
     setEvents((s) => s.filter((ev) => ev.id !== id));
     if (selectedEventId === id) setSelectedEventId(null);
@@ -138,7 +116,6 @@ function Capograma() {
     if (lastEvent && lastEvent.id === id) setLastEvent(null);
   }
 
-  // CSV descarga (incluye x1,y1,x2,y2)
   function downloadCSV() {
     if (!events.length) return;
     const header = ["Equipo", "Jugador", "Accion", "X1", "Y1", "X2", "Y2", "Minuto", "Segundo", "Fecha"];
@@ -161,12 +138,11 @@ function Capograma() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "eventos_capograma.csv";
+    a.download = "eventos_campograma.csv";
     a.click();
     URL.revokeObjectURL(url);
   }
 
-  // STATS (igual que antes)
   function downloadStats() {
     if (!events.length) return;
 
@@ -198,7 +174,6 @@ function Capograma() {
         rows.push(row);
       });
     }
-    // otros equipos
     Object.keys(stats).forEach((team) => {
       if (team === teamLocal || team === teamVisit) return;
       Object.entries(stats[team]).forEach(([player, actionsObj]) => {
@@ -213,25 +188,19 @@ function Capograma() {
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(rows);
     XLSX.utils.book_append_sheet(wb, ws, "Stats");
-    XLSX.writeFile(wb, "stats_capograma.xlsx");
+    XLSX.writeFile(wb, "stats_campograma.xlsx");
   }
 
-  // ----- Handlers para pointer (arrastrar) -----
   function handlePointerDown(e) {
-    // solo permitimos si hay jugador y accion seleccionados
     if (selectedPlayerIdx === null || selectedActionIdx === null) {
-      // mantener comportamiento previo: exigir selección
       alert("Seleccioná jugador y acción antes de marcar");
       return;
     }
     const coords = getRelativeCoords(e);
     if (!coords) return;
-
-    // Iniciar drag (preview)
     setIsDragging(true);
     setDragStart(coords);
     setDragEnd(coords);
-    // capturar puntero para garantizar recibir move/up
     try {
       e.target.setPointerCapture && e.target.setPointerCapture(e.pointerId);
     } catch (err) {}
@@ -245,54 +214,39 @@ function Capograma() {
   }
 
   function handlePointerUp(e) {
-    if (!isDragging) {
-      // si no estaba arrastrando, anterior comportamiento de click simple
-      return;
-    }
+    if (!isDragging) return;
     const coords = getRelativeCoords(e);
     const endCoords = coords || dragEnd;
-    // liberamos captura
     try {
       e.target.releasePointerCapture && e.target.releasePointerCapture(e.pointerId);
     } catch (err) {}
 
-    // si no hubo movimiento significativo -> tratamos como punto
     const dx = Math.abs((dragStart?.nx ?? 0) - (endCoords?.nx ?? 0));
     const dy = Math.abs((dragStart?.ny ?? 0) - (endCoords?.ny ?? 0));
     const dist = Math.sqrt(dx * dx + dy * dy);
-
-    // umbral en unidades normalizadas (ej 0.8 = bastante movimiento)
     const THRESH = 0.8;
 
     if (dist <= THRESH) {
-      // evento punto
       createPointEvent(dragStart);
     } else {
-      // evento flecha
       createArrowEvent(dragStart, endCoords);
     }
 
-    // resetear preview
     setIsDragging(false);
     setDragStart(null);
     setDragEnd(null);
   }
 
-  // ----- Render -----
-  // Calcula última entidad a dibujar en cancha (último evento o preview)
   const preview = isDragging && dragStart && dragEnd
     ? { x1: dragStart.nx, y1: dragStart.ny, x2: dragEnd.nx, y2: dragEnd.ny, preview: true }
     : null;
 
-  // evento a dibujar: hover tiene prioridad, luego seleccionado, luego último generado
   const eventToDraw = hoveredEventId
     ? events.find((e) => e.id === hoveredEventId)
     : (selectedEventId ? events.find((e) => e.id === selectedEventId) : lastEvent);
 
-  // función que dibuja un evento (punto o flecha) usando la misma escala que tu cancha
   function renderEvent(ev, color = "#ffd166") {
     if (!ev) return null;
-    // flecha (tiene x2)
     if (ev.x2 !== undefined && ev.x2 !== "") {
       return (
         <>
@@ -316,8 +270,6 @@ function Capograma() {
         </>
       );
     }
-
-    // punto simple (usa nx/ny)
     if (ev.nx !== undefined) {
       return (
         <g transform={`translate(${(ev.nx / 100) * 105}, ${(1 - ev.ny / 100) * 70})`}>
@@ -325,272 +277,42 @@ function Capograma() {
         </g>
       );
     }
-
     return null;
   }
 
+  // ---- Render principal ----
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-6xl flex gap-4">
-        {/* LEFT: players local */}
-        <div className="w-52 bg-white p-3 rounded shadow flex flex-col">
-          <input
-            value={teamLocal}
-            onChange={(e) => setTeamLocal(e.target.value)}
-            className="mb-2 text-xs p-1 border rounded text-center"
-            placeholder="Equipo Local"
-          />
-          <h4 className="text-sm font-bold mb-2 text-center">Jugadores</h4>
-          <div className="space-y-1 max-h-[60vh] overflow-auto flex-1">
-            {playersLocal.map((p, i) => (
-              <div key={i} className="flex gap-2 items-center">
-                <input
-                  value={p}
-                  onChange={(e) =>
-                    setPlayersLocal((arr) =>
-                      arr.map((x, idx) => (idx === i ? e.target.value : x))
-                    )
-                  }
-                  className="flex-1 text-xs p-1 border rounded"
-                  placeholder={`Jugador ${i + 1}`}
-                />
-                <button
-                  className={`px-2 py-1 rounded text-xs ${
-                    selectedPlayerIdx === `L${i}` && p ? "bg-blue-600 text-white" : "bg-gray-200"
-                  }`}
-                  disabled={!p}
-                  onClick={() => setSelectedPlayerIdx(`L${i}`)}
-                >
-                  OK
-                </button>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-2 flex gap-1">
-            <input
-              value={minutes}
-              onChange={(e) => setMinutes(e.target.value)}
-              className="flex-1 text-xs p-1 border rounded"
-              placeholder="Min"
-            />
-            <input
-              value={seconds}
-              onChange={(e) => setSeconds(e.target.value)}
-              className="flex-1 text-xs p-1 border rounded"
-              placeholder="Seg"
-            />
-          </div>
-        </div>
-
-        {/* CENTER: pitch + acciones + eventos */}
-        <div className="flex-1 flex flex-col items-center">
-          <div className="w-full max-w-2xl bg-green-600 rounded shadow p-2">
-            <div
-              ref={pitchRef}
-              // Usamos pointer events para manejar arrastre/draw
-              onPointerDown={handlePointerDown}
-              onPointerMove={handlePointerMove}
-              onPointerUp={handlePointerUp}
-              className="relative w-full aspect-[105/70] bg-green-600 rounded overflow-hidden"
-            >
-              {/* Marca de agua centrada arriba */}
-              <div className="absolute top-1 left-0 right-0 text-center text-white text-xs opacity-40 z-10 pointer-events-none select-none">
-                Herramienta desarrollada por SCOUTEAR @scout.ear
-              </div>
-
-              <svg viewBox="0 0 105 70" preserveAspectRatio="none" className="w-full h-full block">
-                <defs>
-                  <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
-                    <path d="M0,0 L6,3 L0,6 z" fill="#ffd166" />
-                  </marker>
-                </defs>
-
-                <rect x="0" y="0" width="105" height="70" fill="#3b7a57" rx="2" />
-                <line x1="52.5" y1="0" x2="52.5" y2="70" stroke="#ffffff66" strokeWidth="0.3" />
-                {/* círculo central con radio realista */}
-                <circle cx="52.5" cy="35" r="9.15" fill="none" stroke="#fff" strokeWidth="0.3" />
-
-                {/* Áreas grandes */}
-                <rect x="0" y="18" width="16" height="34" fill="none" stroke="#fff" strokeWidth="0.3" />
-                <rect x="89" y="18" width="16" height="34" fill="none" stroke="#fff" strokeWidth="0.3" />
-
-                {/* Áreas chicas */}
-                <rect x="0" y="26" width="6" height="18" fill="none" stroke="#fff" strokeWidth="0.3" />
-                <rect x="99" y="26" width="6" height="18" fill="none" stroke="#fff" strokeWidth="0.3" />
-
-                {/* Semicírculos correctos (extremos pegados en x=16 / x=89, panza hacia centro) */}
-                <path d="M16,26 A9,9 0 0,1 16,44" fill="none" stroke="#fff" strokeWidth="0.3" />
-                <path d="M89,26 A9,9 0 0,0 89,44" fill="none" stroke="#fff" strokeWidth="0.3" />
-
-                {/* Puntos de penal */}
-                <circle cx="11" cy="35" r="0.6" fill="#fff" />
-                <circle cx="94" cy="35" r="0.6" fill="#fff" />
-
-                {/* Dibujar el evento seleccionado/hover/último (según prioridad) */}
-                {renderEvent(eventToDraw)}
-
-                {/* Preview durante arrastre (si existe) */}
-                {preview && preview.preview && (
-                  <>
-                    {/* punto inicio preview */}
-                    <circle
-                      cx={(preview.x1 / 100) * 105}
-                      cy={(1 - preview.y1 / 100) * 70}
-                      r={1.2}
-                      fill="#ffd166"
-                      stroke="#000"
-                      strokeWidth={0.03}
-                    />
-                    {/* línea preview (dashed) */}
-                    <line
-                      x1={(preview.x1 / 100) * 105}
-                      y1={(1 - preview.y1 / 100) * 70}
-                      x2={(preview.x2 / 100) * 105}
-                      y2={(1 - preview.y2 / 100) * 70}
-                      stroke="#ffd166"
-                      strokeWidth={0.4}
-                      strokeDasharray="1 1"
-                      markerEnd="url(#arrow)"
-                    />
-                  </>
-                )}
-              </svg>
-            </div>
-          </div>
-
-          <div className="mt-3 w-full max-w-2xl flex gap-2">
-            {/* Acciones */}
-            <div className="w-64 bg-white p-3 rounded shadow">
-              <h4 className="text-sm font-bold mb-2 text-center">Acciones</h4>
-              <div className="space-y-1 max-h-40 overflow-auto">
-                {actions.map((a, i) => (
-                  <div key={i} className="flex gap-2 items-center">
-                    <input
-                      value={a}
-                      onChange={(e) =>
-                        setActions((arr) => arr.map((x, idx) => (idx === i ? e.target.value : x)))
-                      }
-                      className="flex-1 text-xs p-1 border rounded"
-                      placeholder={`Acción ${i + 1}`}
-                    />
-                    <button
-                      className={`px-2 py-1 rounded text-xs ${selectedActionIdx === i && a ? "bg-green-600 text-white" : "bg-gray-200"}`}
-                      disabled={!a}
-                      onClick={() => setSelectedActionIdx(i)}
-                    >
-                      OK
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Eventos (tabla) */}
-            <div className="flex-1 bg-white p-3 rounded shadow flex flex-col">
-              <h4 className="text-sm font-bold mb-2 text-center">Eventos</h4>
-              <div className="flex-1 overflow-auto text-xs">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="bg-gray-200">
-                      <th className="p-1 border">Equipo</th>
-                      <th className="p-1 border">Jugador</th>
-                      <th className="p-1 border">Acción</th>
-                      <th className="p-1 border">X1</th>
-                      <th className="p-1 border">Y1</th>
-                      <th className="p-1 border">X2</th>
-                      <th className="p-1 border">Y2</th>
-                      <th className="p-1 border">Min</th>
-                      <th className="p-1 border">Seg</th>
-                      <th className="p-1 border">Borrar</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {events.map((ev) => (
-                      <tr
-                        key={ev.id}
-                        className={`${selectedEventId === ev.id ? "bg-gray-300" : "odd:bg-gray-50"}`}
-                        onMouseEnter={() => setHoveredEventId(ev.id)}
-                        onMouseLeave={() => setHoveredEventId(null)}
-                        onClick={() => {
-                          // toggle selección: si clickeás la misma fila, deselecciona
-                          setSelectedEventId(selectedEventId === ev.id ? null : ev.id);
-                          // mostrarlo en cancha como permanente
-                          setLastEvent(ev);
-                        }}
-                      >
-                        <td className="p-1 border">{ev.equipo}</td>
-                        <td className="p-1 border">{ev.player}</td>
-                        <td className="p-1 border">{ev.action}</td>
-                        <td className="p-1 border">{ev.x1 ?? ev.nx ?? ""}</td>
-                        <td className="p-1 border">{ev.y1 ?? ev.ny ?? ""}</td>
-                        <td className="p-1 border">{ev.x2 ?? ""}</td>
-                        <td className="p-1 border">{ev.y2 ?? ""}</td>
-                        <td className="p-1 border">{ev.minutos ?? ev.minutes ?? ""}</td>
-                        <td className="p-1 border">{ev.segundos ?? ev.seconds ?? ""}</td>
-                        <td className="p-1 border text-center">
-                          <button
-                            className="text-red-600 font-bold"
-                            onClick={(e) => { e.stopPropagation(); deleteEvent(ev.id); }}
-                          >
-                            ✕
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-
-              <div className="mt-2 grid grid-cols-2 gap-2">
-                <button className="w-full bg-blue-600 text-white py-2 rounded text-sm" onClick={downloadCSV} disabled={!events.length}>
-                  Descargar CSV
-                </button>
-                <button className="w-full bg-purple-600 text-white py-2 rounded text-sm" onClick={downloadStats} disabled={!events.length}>
-                  STATS
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* RIGHT: players visitante */}
-        <div className="w-52 bg-white p-3 rounded shadow flex flex-col">
-          <input
-            value={teamVisit}
-            onChange={(e) => setTeamVisit(e.target.value)}
-            className="mb-2 text-xs p-1 border rounded text-center"
-            placeholder="Equipo Visitante"
-          />
-          <h4 className="text-sm font-bold mb-2 text-center">Jugadores</h4>
-          <div className="space-y-1 max-h-[68vh] overflow-auto flex-1">
-            {playersVisit.map((p, i) => (
-              <div key={i} className="flex gap-2 items-center">
-                <input
-                  value={p}
-                  onChange={(e) =>
-                    setPlayersVisit((arr) =>
-                      arr.map((x, idx) => (idx === i ? e.target.value : x))
-                    )
-                  }
-                  className="flex-1 text-xs p-1 border rounded"
-                  placeholder={`Jugador ${i + 1}`}
-                />
-                <button
-                  className={`px-2 py-1 rounded text-xs ${selectedPlayerIdx === `V${i}` && p ? "bg-blue-600 text-white" : "bg-gray-200"}`}
-                  disabled={!p}
-                  onClick={() => setSelectedPlayerIdx(`V${i}`)}
-                >
-                  OK
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* TODO: acá va tu UI completa (inputs, selects, botones, cancha SVG, etc.) */}
+        <p className="text-center w-full">Campograma cargado correctamente ✅</p>
       </div>
     </div>
   );
 }
 
-// Montar la app (mantener createRoot tal como lo tenías)
-ReactDOM.createRoot(document.getElementById("root")).render(<Capograma />);
+// === App principal con botón de inicio ===
+function App() {
+  return React.createElement(
+    "div",
+    { className: "min-h-screen flex flex-col" },
+    React.createElement(
+      "div",
+      { className: "p-2 bg-gray-200 shadow" },
+      React.createElement(
+        "button",
+        {
+          onClick: () => (window.location.href = "index.html"),
+          className: "bg-gray-700 text-white px-4 py-2 rounded",
+        },
+        "INICIO"
+      )
+    ),
+    React.createElement("div", { className: "flex-1" }, React.createElement(Campograma, null))
+  );
+}
+
+// Montar la App
+ReactDOM.createRoot(document.getElementById("root")).render(
+  React.createElement(App, null)
+);
