@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>xG Model</title>
+  <script>
+  if (localStorage.getItem("logged") !== "yes") {
+    window.location.href = "login.html";
+  }
+</script>
 </head>
 <body>
   <div id="root"></div>
