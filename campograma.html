@@ -1,47 +1,32 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <title>Campograma - Scoutear</title>
-    <script>
-  if (localStorage.getItem("logged") !== "yes") {
-    window.location.href = "login.html";
-  }
-</script>
+<head>
+  <meta charset="UTF-8" />
+  <title>Campograma - Scoutear</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <!-- Contenedor React -->
+  <div id="root"></div>
 
-    <!-- Tailwind (para las clases que usaste en CodePen) -->
-    <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Botón de inicio -->
+  <div class="p-4">
+    <button onclick="window.location.href='index.html'"
+            class="bg-gray-700 text-white px-4 py-2 rounded">
+      INICIO
+    </button>
+  </div>
 
-    <!-- XLSX para exportar STATS -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <!-- Script de protección -->
+  <script>
+    if (localStorage.getItem("logged") !== "yes") {
+      window.location.href = "login.html";
+    }
+  </script>
 
-    <!-- React + ReactDOM UMD (deben cargarse antes del script con JSX) -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-
-    <!-- Babel standalone (transpila JSX en el navegador) -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  </head>
-
-  <body class="bg-gray-100 min-h-screen">
-    <div id="root"></div>
-
-    <!-- ======= Aquí va TU JS original (JSX) ======= -->
-    <script type="text/babel">
-      /* todo tu código React como me lo pasaste, sin cambios */
-      // ...
-      ReactDOM.createRoot(document.getElementById("root")).render(<Capograma />);
-    </script>
-    <!-- ====================================================== -->
-
-    <!-- Botón INICIO -->
-    <div style="position:fixed; top:10px; left:10px; z-index:9999;">
-      <a href="index.html"
-         style="background:#2563eb; color:white; padding:8px 14px; border-radius:6px; 
-                font-family:sans-serif; font-size:14px; text-decoration:none;">
-        ⬅ INICIO
-      </a>
-    </div>
-  </body>
+  <!-- Script compilado de la app Campograma -->
+  <script src="coordscout/dist/script.js"></script>
+</body>
 </html>
+
 
