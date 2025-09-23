@@ -1,33 +1,57 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Herramientas Scoutear</title>
-    <script>
-  if (localStorage.getItem("logged") !== "yes") {
-    window.location.href = "login.html";
-  }
-</script>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="bg-gray-100 min-h-screen flex items-center justify-center">
-    <div class="text-center space-y-6">
-      <h1 class="text-3xl font-bold">Herramientas Scoutear</h1>
-      <p class="text-gray-600">Seleccioná la herramienta:</p>
-      <div class="flex justify-center gap-6">
-        <a
-          href="campograma.html"
-          class="bg-green-600 text-white px-6 py-3 rounded shadow hover:bg-green-700"
-        >
-          Campograma
-        </a>
-        <a
-          href="xgmodel.html"
-          class="bg-blue-600 text-white px-6 py-3 rounded shadow hover:bg-blue-700"
-        >
-          xG Model
-        </a>
-      </div>
-    </div>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio - Herramientas Scoutear</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+    button {
+      display: block;
+      width: 200px;
+      margin: 1rem auto;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Bienvenido</h1>
+    <button onclick="window.location.href='https://scoutear.github.io/freetools/campograma.html'">
+      Ir a Campograma
+    </button>
+    <button onclick="window.location.href='https://scoutear.github.io/freetools/xgmodel.html'">
+      Ir a xG Model
+    </button>
+  </div>
+</body>
 </html>
