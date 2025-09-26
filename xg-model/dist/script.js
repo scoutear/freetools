@@ -85,30 +85,30 @@ function App() {
     setEventos(prev => prev.filter((_, i) => i !== index));
   };
 
-  // ✅ Descarga en CSV
   const handleDownload = () => {
     if (eventos.length === 0) return;
 
-    const headers = Object.keys(eventos[0]).join(",") + "\n";
-    const rows = eventos.map(ev =>
-      Object.values(ev)
-        .map(val => `"${val}"`)
-        .join(",")
-    );
-    const csvContent = headers + rows.join("\n");
+    const header = Object.keys(eventos[0]).join(",") + "\n";
+    const rows = eventos.map(ev => Object.values(ev).join(",")).join("\n");
+    const csv = header + rows;
 
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.setAttribute("download", "eventos_xg.csv");
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "eventos_xg.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return /*#__PURE__*/(
-    React.createElement("div", { style: { display: "flex", flexDirection: "row", padding: 20, fontFamily: "sans-serif", alignItems: "flex-start" } }, /*#__PURE__*/
+    React.createElement("div", { style: { display: "flex", flexDirection: "row", padding: 20, fontFamily: "sans-serif", alignItems: "flex-start" } },
+
+      /* LEYENDA NUEVA */
+      React.createElement("div", { style: { position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)", fontWeight: "bold", fontSize: "18px" } },
+        "Modelo xG entrenado por SCOUTEAR @scout.ear"
+      ),
 
       React.createElement("div", { style: { flex: 1, display: "flex", justifyContent: "center" } }, /*#__PURE__*/
         React.createElement("svg", {
@@ -116,13 +116,12 @@ function App() {
           width: "520",
           height: "680",
           style: { border: "2px solid green", background: "#77bb77", cursor: "crosshair" },
-          onClick: handleFieldClick
-        }, /*#__PURE__*/
+          onClick: handleFieldClick }, /*#__PURE__*/
 
-          React.createElement("line", { x1: "52.5", y1: "0", x2: "52.5", y2: "68", stroke: "white", strokeWidth: "0.5" }), /*#__PURE__*/
-          React.createElement("rect", { x: "0", y: "13.84", width: "16.5", height: "40.32", fill: "none", stroke: "white", strokeWidth: "0.5" }), /*#__PURE__*/
-          React.createElement("rect", { x: "0", y: "24.34", width: "5.5", height: "19.32", fill: "none", stroke: "white", strokeWidth: "0.5" }), /*#__PURE__*/
-          React.createElement("circle", { cx: "11", cy: "34", r: "0.8", fill: "white" }), /*#__PURE__*/
+          React.createElement("line", { x1: "52.5", y1: "0", x2: "52.5", y2: "68", stroke: "white", strokeWidth: "0.5" }),
+          React.createElement("rect", { x: "0", y: "13.84", width: "16.5", height: "40.32", fill: "none", stroke: "white", strokeWidth: "0.5" }),
+          React.createElement("rect", { x: "0", y: "24.34", width: "5.5", height: "19.32", fill: "none", stroke: "white", strokeWidth: "0.5" }),
+          React.createElement("circle", { cx: "11", cy: "34", r: "0.8", fill: "white" }),
           React.createElement("rect", { x: "-2.44", y: "30.34", width: "2.44", height: "7.32", fill: "none", stroke: "white", strokeWidth: "0.5" }),
 
           coords && /*#__PURE__*/
@@ -132,114 +131,86 @@ function App() {
             r: "1.2",
             fill: "red",
             stroke: "black"
-          })
-        )
-      ), /*#__PURE__*/
+          }))), 
 
       React.createElement("div", { style: { flex: 1, marginLeft: 40 } }, /*#__PURE__*/
         React.createElement("h2", null, "Calculador xG"), /*#__PURE__*/
 
-        React.createElement("div", { style: { marginBottom: 10 } }, /*#__PURE__*/
+        React.createElement("div", { style: { marginBottom: 10 } },
           React.createElement("input", {
             type: "text",
             placeholder: "Apellido del jugador",
             value: jugador,
             onChange: e => setJugador(e.target.value)
-          })
-        ),
+          })),
 
         coords && /*#__PURE__*/
         React.createElement("p", null, "Coordenadas: x = ",
-          coords.x.toFixed(2), ", y = ", coords.y.toFixed(2)
-        ), /*#__PURE__*/
+          coords.x.toFixed(2), ", y = ", coords.y.toFixed(2)),
 
-        React.createElement("div", { style: { marginBottom: 10 } }, /*#__PURE__*/
+        React.createElement("div", { style: { marginBottom: 10 } },
           React.createElement("label", null, "Parte del cuerpo:",
             " ",
-            /*#__PURE__*/
-            React.createElement("select", { value: parteCuerpo, onChange: e => setParteCuerpo(e.target.value) }, /*#__PURE__*/
-              React.createElement("option", null, "Pie derecho"), /*#__PURE__*/
-              React.createElement("option", null, "Pie izquierdo"), /*#__PURE__*/
-              React.createElement("option", null, "Cabeza"), /*#__PURE__*/
-              React.createElement("option", null, "Otro")
-            )
-          )
-        ), /*#__PURE__*/
+            React.createElement("select", { value: parteCuerpo, onChange: e => setParteCuerpo(e.target.value) },
+              React.createElement("option", null, "Pie derecho"),
+              React.createElement("option", null, "Pie izquierdo"),
+              React.createElement("option", null, "Cabeza"),
+              React.createElement("option", null, "Otro")))),
 
-        React.createElement("div", { style: { marginBottom: 10 } }, /*#__PURE__*/
+        React.createElement("div", { style: { marginBottom: 10 } },
           React.createElement("label", null, "Tipo de remate:",
             " ",
-            /*#__PURE__*/
-            React.createElement("select", { value: tipoRemate, onChange: e => setTipoRemate(e.target.value) }, /*#__PURE__*/
-              React.createElement("option", null, "Juego abierto"), /*#__PURE__*/
-              React.createElement("option", null, "Balón parado"), /*#__PURE__*/
-              React.createElement("option", null, "Contraataque"), /*#__PURE__*/
-              React.createElement("option", null, "Otro")
-            )
-          )
-        ), /*#__PURE__*/
+            React.createElement("select", { value: tipoRemate, onChange: e => setTipoRemate(e.target.value) },
+              React.createElement("option", null, "Juego abierto"),
+              React.createElement("option", null, "Balón parado"),
+              React.createElement("option", null, "Contraataque"),
+              React.createElement("option", null, "Otro")))),
 
-        React.createElement("div", { style: { marginBottom: 10 } }, /*#__PURE__*/
+        React.createElement("div", { style: { marginBottom: 10 } },
           React.createElement("label", null,
-            /*#__PURE__*/
             React.createElement("input", {
               type: "checkbox",
               checked: underPressure,
               onChange: e => setUnderPressure(e.target.checked)
             }),
-            " ", "Bajo presión"
-          )
-        ), /*#__PURE__*/
+            " ", "Bajo presión")),
 
         React.createElement("button", {
           onClick: handleCalculate,
-          style: { marginTop: 10, padding: "8px 16px", fontSize: "16px" }
-        }, "Calcular xG"),
+          style: { marginTop: 10, padding: "8px 16px", fontSize: "16px" } }, "Calcular xG"),
 
         xg !== null && /*#__PURE__*/
         React.createElement("div", { style: { marginTop: 20, fontSize: 20, fontWeight: "bold" } }, "xG estimado: ",
-          xg.toFixed(3)
-        )
-      ), /*#__PURE__*/
+          xg.toFixed(3))),
 
       React.createElement("div", { style: { flex: 1, marginLeft: 40 } }, /*#__PURE__*/
-        React.createElement("h3", null, "Eventos registrados"), /*#__PURE__*/
-        React.createElement("button", { onClick: handleDownload }, "Descargar CSV"), /*#__PURE__*/
-        React.createElement("table", { border: "1", cellPadding: "5", style: { marginTop: 10, borderCollapse: "collapse" } }, /*#__PURE__*/
-          React.createElement("thead", null, /*#__PURE__*/
-            React.createElement("tr", null, /*#__PURE__*/
-              React.createElement("th", null, "Jugador"), /*#__PURE__*/
-              React.createElement("th", null, "Coord_X"), /*#__PURE__*/
-              React.createElement("th", null, "Coord_Y"), /*#__PURE__*/
-              React.createElement("th", null, "Parte del cuerpo"), /*#__PURE__*/
-              React.createElement("th", null, "Tipo de Remate"), /*#__PURE__*/
-              React.createElement("th", null, "U-Pres"), /*#__PURE__*/
-              React.createElement("th", null, "xG"), /*#__PURE__*/
-              React.createElement("th", null, "Acción")
-            )
-          ), /*#__PURE__*/
-
+        React.createElement("h3", null, "Eventos registrados"),
+        React.createElement("button", { onClick: handleDownload }, "Descargar CSV"),
+        React.createElement("table", { border: "1", cellPadding: "5", style: { marginTop: 10, borderCollapse: "collapse" } },
+          React.createElement("thead", null,
+            React.createElement("tr", null,
+              React.createElement("th", null, "Jugador"),
+              React.createElement("th", null, "Coord_X"),
+              React.createElement("th", null, "Coord_Y"),
+              React.createElement("th", null, "Parte del cuerpo"),
+              React.createElement("th", null, "Tipo de Remate"),
+              React.createElement("th", null, "U-Pres"),
+              React.createElement("th", null, "xG"),
+              React.createElement("th", null, "Acción"))),
           React.createElement("tbody", null,
-            eventos.map((ev, i) => /*#__PURE__*/
-              React.createElement("tr", { key: i }, /*#__PURE__*/
-                React.createElement("td", null, ev.jugador), /*#__PURE__*/
-                React.createElement("td", null, ev.x), /*#__PURE__*/
-                React.createElement("td", null, ev.y), /*#__PURE__*/
-                React.createElement("td", null, ev.parteCuerpo), /*#__PURE__*/
-                React.createElement("td", null, ev.tipoRemate), /*#__PURE__*/
-                React.createElement("td", null, ev.underPressure), /*#__PURE__*/
-                React.createElement("td", null, ev.xg), /*#__PURE__*/
+            eventos.map((ev, i) =>
+              React.createElement("tr", { key: i },
+                React.createElement("td", null, ev.jugador),
+                React.createElement("td", null, ev.x),
+                React.createElement("td", null, ev.y),
+                React.createElement("td", null, ev.parteCuerpo),
+                React.createElement("td", null, ev.tipoRemate),
+                React.createElement("td", null, ev.underPressure),
+                React.createElement("td", null, ev.xg),
                 React.createElement("td", null,
-                  /*#__PURE__*/
-                  React.createElement("button", { onClick: () => handleDelete(i) }, "❌")
-                )
-              )
-            )
-          )
-        )
-      )
-    )
-  );
+                  React.createElement("button", { onClick: () => handleDelete(i) }, "❌"))))))))));
+
 }
 
 ReactDOM.render( /*#__PURE__*/React.createElement(App, null), document.getElementById("root"));
+
